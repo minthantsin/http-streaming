@@ -27,13 +27,13 @@ jobs:
       shell: bash
       id: nvm
 
-    - name: Install ffmpeg for firefox
+    - name: Install ffmpeg/pulseaudio for firefox on linux w/o browserstack
       run: sudo apt-get install ffmpeg pulseaudio
-      if: ${{ startsWith(matrix.os, 'ubuntu') }}
+      if: ${{ startsWith(matrix.os, 'ubuntu') && !env.BROWSER_STACK_USERNAME }}
 
-    - name: start pulseaudio for firefox
+    - name: start pulseaudio for firefox on linux w/o browserstack
       run: pulseaudio -D
-      if: ${{ startsWith(matrix.os, 'ubuntu') }}
+      if: ${{ startsWith(matrix.os, 'ubuntu') && !env.BROWSER_STACK_USERNAME }}
 
     - name: Setup node
       uses: actions/setup-node@v1
