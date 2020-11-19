@@ -17,7 +17,7 @@ export const absoluteUrl = function(relativeUrl) {
 const origOpen = sinon.FakeXMLHttpRequest.prototype.open;
 
 sinon.FakeXMLHttpRequest.prototype.open = function() {
-  this.responseURL = absoluteUrl(this.url);
+  this.responseURL = absoluteUrl(arguments[1]);
   return origOpen.apply(this, arguments);
 };
 
@@ -184,7 +184,7 @@ export const downloadProgress = (xhr, rawEventData) => {
 };
 
 export const useFakeEnvironment = function(assert) {
-  const realXMLHttpRequest = window.XMLHttpRequest;
+  const realXMLHttpRequest = videojs.xhr.XMLHttpRequest;
 
   const fakeEnvironment = {
     requests: [],
