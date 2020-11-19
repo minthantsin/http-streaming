@@ -70,22 +70,17 @@ const buildSegmentString = function() {
   const segmentDataExportStrings = Object.keys(segmentData).reduce((acc, key) => {
     // use a function since the segment may be cleared out on usage
     acc.push(`export const ${key} = () => {
-        cache.${key} = cache.${key} || base64ToUint8Array('${segmentData[key]}');
-        const dest = new Uint8Array(cache.${key}.byteLength);
-        dest.set(cache.${key});
-        return dest;
+        return new Uint8Array(base64ToUint8Array('${segmentData[key]}'));
       };`);
     // strings can be used to fake responseText in progress events
     // when testing partial appends of data
     acc.push(`export const ${key}String = () => {
-        cache.${key}String = cache.${key}String || utf16CharCodesToString(${key}());
-        return cache.${key}String;
+        return utf16CharCodesToString(${key}());
       };`);
     return acc;
   }, []);
 
   const segmentsFile =
-    'const cache = {};\n' +
     `const base64ToUint8Array = ${base64ToUint8Array.toString()};\n` +
     `const utf16CharCodesToString = ${utf16CharCodesToString.toString()};\n` +
     segmentDataExportStrings.join('\n');
