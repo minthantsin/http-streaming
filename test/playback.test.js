@@ -6,15 +6,6 @@ import '../src/videojs-http-streaming';
 import 'videojs-contrib-eme';
 
 const playFor = function(player, time, cb) {
-  if (player.paused()) {
-    const playPromise = player.play();
-
-    // Catch/silence error when a pause interrupts a play request
-    // on browsers which return a promise
-    if (typeof playPromise !== 'undefined' && typeof playPromise.then === 'function') {
-      playPromise.then(null, (e) => {});
-    }
-  }
   const targetTime = player.currentTime() + time;
 
   const checkPlayerTime = function() {
@@ -25,6 +16,19 @@ const playFor = function(player, time, cb) {
       cb();
     }, 10);
   };
+
+  if (player.paused()) {
+    const playPromise = player.play();
+
+    // Catch/silence error when a pause interrupts a play request
+    // on browsers which return a promise
+    if (typeof playPromise !== 'undefined' && typeof playPromise.then === 'function') {
+      playPromise.then(checkPlayerTime, (e) => {
+        QUnit.assert.notOk(true, 'play promise failed with error', e);
+      });
+      return;
+    }
+  }
 
   checkPlayerTime();
 };
