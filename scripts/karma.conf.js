@@ -29,7 +29,7 @@ module.exports = function(config) {
       delete defaults.bsSafariElCapitan;
 
       // eslint-disable-next-line
-      defaults.bsFirefox.browser_version = 'latest-beta';
+      defaults.bsFirefox.browser_version = '83.0+beta';
 
       return defaults;
     },
