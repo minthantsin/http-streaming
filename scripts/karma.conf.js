@@ -28,6 +28,9 @@ module.exports = function(config) {
       delete defaults.bsSafariMojave;
       delete defaults.bsSafariElCapitan;
 
+      // eslint-disable-next-line
+      defaults.bsFirefox.browser_version = 'latest-beta';
+
       return defaults;
     },
     serverBrowsers() {
